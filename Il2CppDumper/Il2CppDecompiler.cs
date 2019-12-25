@@ -236,6 +236,10 @@ namespace Il2CppDumper
                                     writer.Write(GetCustomAttribute(imageDef, methodDef.customAttributeIndex, methodDef.token, "\t"));
                                 }
                                 writer.Write("\t");
+                                if (methodDef.slot != 0xffff)
+                                {
+                                    writer.Write("/* [{0,2}:0x{1:X4}] */ ", methodDef.slot, il2Cpp.GetVTableOffsetFromSlot(methodDef.slot));
+                                }
                                 writer.Write(GetModifiers(methodDef));
                                 var methodReturnType = il2Cpp.types[methodDef.returnType];
                                 var methodName = metadata.GetStringFromIndex(methodDef.nameIndex);

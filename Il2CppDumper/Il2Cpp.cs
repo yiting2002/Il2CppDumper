@@ -16,6 +16,7 @@ namespace Il2CppDumper
         public ulong[] reversePInvokeWrappers;
         public ulong[] unresolvedVirtualCallPointers;
         private ulong[] fieldOffsets;
+        private ulong vtableOffset;
         public Il2CppType[] types;
         private Dictionary<ulong, Il2CppType> typesdic = new Dictionary<ulong, Il2CppType>();
         public ulong[] metadataUsages;
@@ -106,6 +107,7 @@ namespace Il2CppDumper
                 {
                     methodPointers = ReadPointers(pCodeRegistration.methodPointers, pCodeRegistration.methodPointersCount);
                 }
+                vtableOffset = 0;
             }
             else
             {
@@ -148,6 +150,9 @@ namespace Il2CppDumper
                 {
                     methodPointers = MapVATR<ulong>(pCodeRegistration.methodPointers, pCodeRegistration.methodPointersCount);
                 }
+                vtableOffset = 0;
+                if (version >= 24.1f)
+                    vtableOffset = 0x128;
             }
             //处理泛型
             genericMethodTable = MapVATR<Il2CppGenericMethodFunctionsDefinitions>(pMetadataRegistration.genericMethodTable, pMetadataRegistration.genericMethodTableCount);
@@ -211,6 +216,18 @@ namespace Il2CppDumper
             catch
             {
                 return -1;
+            }
+        }
+
+        public int GetVTableOffsetFromSlot(ushort slot)
+        {
+            if (is32Bit)
+            {
+                return (int)vtableOffset + 4 * slot;
+            }
+            else
+            {
+                return (int)vtableOffset + 16 * slot;
             }
         }
 

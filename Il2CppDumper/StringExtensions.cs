@@ -57,7 +57,10 @@ namespace Il2CppDumper
                         re.Append(@"\u2029");
                         break;
                     default:
-                        re.Append(c);
+                        if (c > '~')
+                            re.AppendFormat(@"\u{0:x4}", (ushort)c);
+                        else
+                            re.Append(c);
                         break;
                 }
             }

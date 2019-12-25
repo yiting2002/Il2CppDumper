@@ -271,7 +271,7 @@ namespace Il2CppDumper
             decompiler.Decompile(writer, config);
             Console.WriteLine("Done!");
             Console.WriteLine("Generate script...");
-            var scriptwriter = new StreamWriter(new FileStream("script.py", FileMode.Create), new UTF8Encoding(false));
+            var scriptwriter = new StreamWriter(new FileStream("script.idc", FileMode.Create), new UTF8Encoding(false));
             var scriptGenerator = new ScriptGenerator(metadata, il2Cpp);
             scriptGenerator.WriteScript(scriptwriter, config);
             Console.WriteLine("Done!");
